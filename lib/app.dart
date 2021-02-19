@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:journal/screens/entries.dart';
+import 'package:journal/screens/new_entry.dart';
+import 'package:journal/screens/welcome.dart';
 
 class App extends StatelessWidget {
   // This widget is the root of the application.
+    static final routes = {
+    Welcome.routeName: (context) => Welcome(),
+    NewEntry.routeName: (context) => NewEntry(),
+    Entries.routeName: (context) => Entries()
+  };
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -10,7 +19,7 @@ class App extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      routes: routes,
     );
   }
 }
@@ -47,12 +56,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("adaptive layout"),
-      ),
-      body: LayoutBuilder(
-          builder:
-              getLayout), // This trailing comma makes auto-formatting nicer for build methods.
+      appBar: AppBar(title: Text("adaptive layout")),
+      endDrawer: Drawer(),
+      body: Welcome(),
     );
   }
 }
