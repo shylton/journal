@@ -48,7 +48,7 @@ class _NewEntryState extends State<NewEntry> {
       TextFormField(
         autofocus: false,
         keyboardType: TextInputType.multiline,
-        minLines: 4,
+        minLines: 3,
         maxLines: null,
         decoration: InputDecoration(
           labelText: 'Body',
@@ -57,8 +57,11 @@ class _NewEntryState extends State<NewEntry> {
         validator: (value) => nonEmptyField(value),
       ),
       SizedBox(height: 10),
-      RaisedButton(
-          onPressed: () => validateAndSave(context), child: Text('Save Entry'))
+      Builder(builder: (context) {
+        return RaisedButton(
+            onPressed: () => validateAndSave(context),
+            child: Text('Save Entry'));
+      })
     ];
   }
 
