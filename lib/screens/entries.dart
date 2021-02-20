@@ -8,7 +8,7 @@ class Entries extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Entries List')),
+      appBar: AppBar(title: Center(child: Text('Journal Entries'))),
       floatingActionButton: FloatingActionButton(
         child: Text('+'),
         onPressed: () => {Navigator.pushNamed(context, NewEntry.routeName)},

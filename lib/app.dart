@@ -24,6 +24,7 @@ class App extends StatelessWidget {
   }
 }
 
+// layout configs go inside ea screen?
 class VerticalLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
