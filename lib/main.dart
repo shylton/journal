@@ -9,6 +9,6 @@ void main() async {
     DeviceOrientation.landscapeRight,
     DeviceOrientation.portraitUp
   ]);
-  
+  // await dbManager.initialize()
   runApp(App());
 }

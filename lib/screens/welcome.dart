@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:journal/screens/new_entry.dart';
 
-import 'entries.dart';
+import 'entries_page.dart';
 
 class Welcome extends StatelessWidget {
   static final routeName = '/';
@@ -28,7 +28,7 @@ class Welcome extends StatelessWidget {
     return RaisedButton(
         child: Text('List'),
         onPressed: () {
-          Navigator.pushNamed(context, Entries.routeName);
+          Navigator.pushNamed(context, EntriesPage.routeName);
         });
   }
 
