@@ -1,5 +1,6 @@
 import 'package:english_words/english_words.dart';
 import 'dart:math' show Random;
+import 'package:intl/intl.dart';
 
 class EntryDto {
   final int id;
@@ -19,6 +20,11 @@ class EntryDto {
 
   @override
   String toString() => 'Title: $title | Body: $body';
+
+  String get dateString {
+    final dtFormat = DateFormat("EEEE, MMMM d, y");
+    return dtFormat.format(date);
+  }
 }
 
 String genWordPairs(int amount) {

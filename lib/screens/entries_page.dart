@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:journal/screens/entry_detail.dart';
 
-import '../widgets/entry_widget.dart';
 import '../models/entry_dto.dart';
 import 'new_entry.dart';
 
@@ -11,7 +10,6 @@ class EntriesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final entriesList = genEntryList(19);
-    final dtFormat = DateFormat("EEEE, MMMM d, y");
 
     return Scaffold(
       appBar: AppBar(title: Center(child: Text('Journal Entries'))),
@@ -24,7 +22,13 @@ class EntriesPage extends StatelessWidget {
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(entriesList[index].title),
-            subtitle: Text(dtFormat.format(entriesList[index].date)),
+            subtitle: Text(entriesList[index].dateString),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EntryDetail(entriesList[index])));
+            },
           );
         },
       ),
