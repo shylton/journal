@@ -1,25 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:journal/screens/entries_page.dart';
 import 'package:journal/screens/new_entry.dart';
 import 'package:journal/screens/welcome.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   // This widget is the root of the application.
-    static final routes = {
+  final SharedPreferences preferences;
+  static final routes = {
     Welcome.routeName: (context) => Welcome(),
     NewEntry.routeName: (context) => NewEntry(),
     EntriesPage.routeName: (context) => EntriesPage()
   };
 
+  App({Key key, @required this.preferences}) : super(key: key);
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  bool darkMode;
+
+  void initState() {
+    super.initState();
+    darkMode = widget.preferences.getBool('darkMode') ?? false;
+  }
+
+  void darkTheme(bool newValue) {
+    widget.preferences.setBool('darkMode', newValue);
+    setState(() {
+      darkMode = newValue;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    darkTheme(true);
+    ThemeData theme = darkMode ? ThemeData.dark() : ThemeData.light();
     return MaterialApp(
       title: 'Journal',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      routes: routes,
+      theme: theme,
+      // ThemeData(
+      //   primarySwatch: Colors.teal,
+      //   visualDensity: VisualDensity.adaptivePlatformDensity,
+      // ),
+      routes: App.routes,
     );
   }
 }

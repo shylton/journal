@@ -45,6 +45,16 @@ class _NewEntryState extends State<NewEntry> {
         validator: (value) => nonEmptyField(value),
       ),
       SizedBox(height: 20),
+      DropdownButtonFormField(
+        items: [1, 2, 3, 4]
+            .map((label) => DropdownMenuItem(
+                  child: Text(label.toString()),
+                  value: label,
+                ))
+            .toList(),
+        hint: Text('Put thy rating here'),
+        onChanged: (value) {},
+      ),
       TextFormField(
         autofocus: false,
         keyboardType: TextInputType.multiline,

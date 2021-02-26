@@ -12,7 +12,14 @@ class EntryDetail extends StatelessWidget {
       appBar: AppBar(title: Center(child: Text(entry.dateString))),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Text(entry.body),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Rating: ${entry.rating.toString()}'),
+            Divider(),
+            Text(entry.body),
+          ],
+        ),
       ),
     );
   }
