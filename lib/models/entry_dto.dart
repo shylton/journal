@@ -25,6 +25,11 @@ class EntryDto {
     final dtFormat = DateFormat("EEEE, MMMM d, y");
     return dtFormat.format(date);
   }
+
+  String get shortDateString {
+    final dtFormat = DateFormat("MMM d, y");
+    return dtFormat.format(date);
+  }
 }
 
 String genWordPairs(int amount) {

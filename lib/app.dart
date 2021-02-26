@@ -16,7 +16,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  bool darkMode;  // true =  darkMode ON
+  bool darkMode; // true =  darkMode ON
 
   void initState() {
     super.initState();
@@ -34,60 +34,16 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     final routes = {
-      Welcome.routeName: (context) => Welcome(changeMode: switchTheme),
+      Welcome.routeName: (context) => Welcome(switchTheme),
       NewEntry.routeName: (context) => NewEntry(),
-      EntriesPage.routeName: (context) => EntriesPage(),
-      EntryDetail.routeName: (context) => EntryDetail(null)
+      EntriesPage.routeName: (context) => EntriesPage(switchTheme),
+      EntryDetail.routeName: (context) => EntryDetail(null, null)
     };
     ThemeData theme = darkMode ? ThemeData.dark() : ThemeData.light();
     return MaterialApp(
       title: 'Journal',
       theme: theme,
-      // ThemeData(
-      //   primarySwatch: Colors.teal,
-      //   visualDensity: VisualDensity.adaptivePlatformDensity,
-      // ),
       routes: routes,
-    );
-  }
-}
-
-// layout configs go inside ea screen?
-class VerticalLayout extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.lime,
-    );
-  }
-}
-
-class HorizontalLayout extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Expanded(child: Container(color: Colors.lightGreen)),
-        Expanded(
-            child: Container(
-          color: Colors.deepOrange,
-        ))
-      ],
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  Widget getLayout(BuildContext context, BoxConstraints constraints) =>
-      constraints.maxWidth < 500 ? VerticalLayout() : HorizontalLayout();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("adaptive layout")),
-      endDrawer: Drawer(),
-      body: Welcome(),
     );
   }
 }

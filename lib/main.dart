@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'app.dart';
 
 void main() async {
@@ -11,5 +12,6 @@ void main() async {
     DeviceOrientation.portraitUp
   ]);
   // await dbManager.initialize()
+  // awaiting for sharedprefs here so we dont have to await in children
   runApp(App(preferences: await SharedPreferences.getInstance()));
 }

@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:journal/screens/new_entry.dart';
-import 'package:journal/widgets/journal_scaffold.dart';
 
+import 'package:journal/widgets/add_entry.dart';
+import 'package:journal/widgets/journal_scaffold.dart';
 import 'entries_page.dart';
 
 class Welcome extends StatelessWidget {
   static final routeName = '/';
-  final void Function() changeMode;
-  Welcome({Key key, this.changeMode}) : super(key: key);
+  final void Function() modeSwitcher; // function to switch light/dark mode
+  Welcome(this.modeSwitcher);
 
-  // user registration info?
   @override
   Widget build(BuildContext context) {
+    // build the body to pass to the Scaffold
     final pageBody = Center(
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [label(context), button(context), button2(context)]),
+          children: [label(context), button2(context)]),
     );
 
-    return journalScaffold('Welcome', pageBody, context, changeMode, button: null);
+    return journalScaffold(
+        title: 'Welcome',
+        body: pageBody,
+        context: context,
+        switcher: modeSwitcher,
+        button: addEntry(context));
   }
 
   Widget label(BuildContext context) {
@@ -35,22 +40,9 @@ class Welcome extends StatelessWidget {
 
   Widget button2(BuildContext context) {
     return RaisedButton(
-        child: Text('List'),
+        child: Text('See List'),
         onPressed: () {
           Navigator.pushNamed(context, EntriesPage.routeName);
         });
-  }
-
-  Widget button(BuildContext context) {
-    return RaisedButton(
-        child: Text('Add new journal entry'),
-        onPressed: () {
-          gotoNew(context);
-        });
-  }
-
-  void gotoNew(BuildContext context) {
-    // DONE
-    Navigator.pushNamed(context, NewEntry.routeName);
   }
 }

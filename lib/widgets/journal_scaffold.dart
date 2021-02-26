@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+/// Scaffold common to all pages. includes end drawer to switch theme
 Widget journalScaffold(
-    String title, Widget body, BuildContext context, Function() switcher,
-    {FloatingActionButton button}) {
+    {@required String title,
+    @required Widget body,
+    @required BuildContext context,
+    @required Function() switcher,
+    FloatingActionButton button}) {
   return Scaffold(
     appBar: AppBar(title: Text(title), centerTitle: true),
     floatingActionButton: button, // will be null if undefined
@@ -14,7 +17,7 @@ Widget journalScaffold(
           DrawerHeader(
             child: null,
           ),
-          ModeSwitch(changeMode: switcher)
+          ModeSwitch(switcher)
         ],
       ),
     ),
@@ -23,7 +26,7 @@ Widget journalScaffold(
 
 class ModeSwitch extends StatefulWidget {
   final void Function() changeMode;
-  ModeSwitch({Key key, this.changeMode}) : super(key: key);
+  ModeSwitch(this.changeMode);
 
   @override
   _ModeSwitchState createState() => _ModeSwitchState();
