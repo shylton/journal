@@ -10,7 +10,7 @@ import 'package:journal/screens/welcome.dart';
 class App extends StatefulWidget {
   final SharedPreferences preferences;
 
-  App({Key key, @required this.preferences}) : super(key: key);
+  App(this.preferences);
   @override
   _AppState createState() => _AppState();
 }

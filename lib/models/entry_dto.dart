@@ -3,32 +3,36 @@ import 'dart:math' show Random;
 import 'package:intl/intl.dart';
 
 class EntryDto {
-  final int id;
-  final String title;
-  final String body;
-  final int rating;
-  final DateTime date;
+  String title;
+  String body;
+  int rating;
+  DateTime datetime;
 
-  EntryDto({this.id, this.title, this.body, this.rating, this.date});
+  EntryDto({this.title, this.body, this.rating, this.datetime});
 
   EntryDto.sampler()
-      : id = Random().nextInt(99999),
-        title = genWordPairs(1),
+      : title = genWordPairs(1),
         body = genWordPairs(6),
         rating = Random().nextInt(6),
-        date = DateTime.now();
+        datetime = DateTime.now();
 
   @override
   String toString() => 'Title: $title | Body: $body';
 
   String get dateString {
     final dtFormat = DateFormat("EEEE, MMMM d, y");
-    return dtFormat.format(date);
+    return dtFormat.format(datetime);
   }
 
   String get shortDateString {
     final dtFormat = DateFormat("MMM d, y");
-    return dtFormat.format(date);
+    return dtFormat.format(datetime);
+  }
+
+  // goes in the database with format that can be used by DateTime.parse()
+  String get dbDate {
+    final dtFormat = DateFormat("y-MM-d");
+    return dtFormat.format(datetime);
   }
 }
 

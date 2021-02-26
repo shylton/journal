@@ -13,5 +13,5 @@ void main() async {
   ]);
   // await dbManager.initialize()
   // awaiting for sharedprefs here so we dont have to await in children
-  runApp(App(preferences: await SharedPreferences.getInstance()));
+  runApp(App(await SharedPreferences.getInstance()));
 }

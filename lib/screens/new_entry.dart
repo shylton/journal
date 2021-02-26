@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+
+import 'package:journal/models/entry_dto.dart';
 import 'package:journal/widgets/journal_scaffold.dart';
 
 class NewEntry extends StatefulWidget {
@@ -13,6 +16,7 @@ class NewEntry extends StatefulWidget {
 
 class _NewEntryState extends State<NewEntry> {
   final formKey = GlobalKey<FormState>();
+  EntryDto formData = EntryDto.sampler(); // sampler auto adds cur date
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +39,7 @@ class _NewEntryState extends State<NewEntry> {
               decoration: InputDecoration(
                   labelText: 'Title', border: OutlineInputBorder()),
               validator: (value) => nonEmptyField(value),
+              onSaved: (String value) => formData.title = value,
             ),
             SizedBox(height: 10),
             DropdownButtonFormField(
@@ -46,6 +51,8 @@ class _NewEntryState extends State<NewEntry> {
                   .toList(),
               hint: Text('Put your rating here'),
               onChanged: (value) {},
+              // validator: (value) => nonEmptyField(value),
+              onSaved: (int value) => formData.rating = value,
             ),
             TextFormField(
               autofocus: false,
@@ -56,7 +63,7 @@ class _NewEntryState extends State<NewEntry> {
                 labelText: 'Body',
                 border: OutlineInputBorder(),
               ),
-              validator: (value) => nonEmptyField(value),
+              onSaved: (String value) => formData.body = value,
             ),
             SizedBox(height: 10),
             Builder(builder: (context) {
@@ -68,51 +75,25 @@ class _NewEntryState extends State<NewEntry> {
     );
   }
 
-  List<Widget> formFields(BuildContext context) {
-    return [
-      TextFormField(
-        autofocus: true,
-        decoration:
-            InputDecoration(labelText: 'Title', border: OutlineInputBorder()),
-        validator: (value) => nonEmptyField(value),
-      ),
-      SizedBox(height: 20),
-      DropdownButtonFormField(
-        items: [1, 2, 3, 4]
-            .map((label) => DropdownMenuItem(
-                  child: Text(label.toString()),
-                  value: label,
-                ))
-            .toList(),
-        hint: Text('Put thy rating here'),
-        onChanged: (value) {},
-      ),
-      TextFormField(
-        autofocus: false,
-        keyboardType: TextInputType.multiline,
-        minLines: 3,
-        maxLines: null,
-        decoration: InputDecoration(
-          labelText: 'Body',
-          border: OutlineInputBorder(),
-        ),
-        validator: (value) => nonEmptyField(value),
-      ),
-      SizedBox(height: 10),
-      Builder(builder: (context) {
-        return RaisedButton(
-            onPressed: () => validateAndSave(context),
-            child: Text('Save Entry'));
-      })
-    ];
-  }
-
-  void validateAndSave(BuildContext context) {
+  void validateAndSave(BuildContext context) async {
     final curState = formKey.currentState;
 
     if (curState.validate()) {
       Scaffold.of(context)
           .showSnackBar(SnackBar(content: Text('Saving entry...')));
+      curState.save();
+      // await deleteDatabase('journal.db'); // TODO: remove this line
+      final Database db = await openDatabase('journal.db', version: 1,
+          onCreate: (Database database, int version) async {
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS journal_entries(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, body TEXT NOT NULL, rating INTEGER NOT NULL, date TEXT NOT NULL);');
+      });
+      await db.transaction((txn) async {
+        await txn.rawInsert(
+            'INSERT INTO journal_entries(title, body, rating, date) values (?, ?, ?, ?)',
+            [formData.title, formData.body, formData.rating, formData.dbDate]);
+      });
+      Navigator.of(context).pop();
     }
   }
 } // _NewEntryState
