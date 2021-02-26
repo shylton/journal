@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:journal/screens/entry_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:journal/screens/entries_page.dart';
 import 'package:journal/screens/new_entry.dart';
 import 'package:journal/screens/welcome.dart';
 
+/// this is the root. must be stateful in order to switch dark/light themes
 class App extends StatefulWidget {
-  // This widget is the root of the application.
   final SharedPreferences preferences;
-  static final routes = {
-    Welcome.routeName: (context) => Welcome(),
-    NewEntry.routeName: (context) => NewEntry(),
-    EntriesPage.routeName: (context) => EntriesPage()
-  };
 
   App({Key key, @required this.preferences}) : super(key: key);
   @override
@@ -20,23 +16,29 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  bool darkMode;
+  bool darkMode;  // true =  darkMode ON
 
   void initState() {
     super.initState();
     darkMode = widget.preferences.getBool('darkMode') ?? false;
   }
 
-  void darkTheme(bool newValue) {
-    widget.preferences.setBool('darkMode', newValue);
+  void switchTheme() {
+    widget.preferences
+        .setBool('darkMode', !widget.preferences.getBool('darkMode'));
     setState(() {
-      darkMode = newValue;
+      darkMode = widget.preferences.getBool('darkMode');
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    darkTheme(true);
+    final routes = {
+      Welcome.routeName: (context) => Welcome(changeMode: switchTheme),
+      NewEntry.routeName: (context) => NewEntry(),
+      EntriesPage.routeName: (context) => EntriesPage(),
+      EntryDetail.routeName: (context) => EntryDetail(null)
+    };
     ThemeData theme = darkMode ? ThemeData.dark() : ThemeData.light();
     return MaterialApp(
       title: 'Journal',
@@ -45,7 +47,7 @@ class _AppState extends State<App> {
       //   primarySwatch: Colors.teal,
       //   visualDensity: VisualDensity.adaptivePlatformDensity,
       // ),
-      routes: App.routes,
+      routes: routes,
     );
   }
 }

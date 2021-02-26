@@ -6,6 +6,8 @@ import 'entries_page.dart';
 
 class Welcome extends StatelessWidget {
   static final routeName = '/';
+  final void Function() changeMode;
+  Welcome({Key key, this.changeMode}) : super(key: key);
 
   // user registration info?
   @override
@@ -17,7 +19,7 @@ class Welcome extends StatelessWidget {
           children: [label(context), button(context), button2(context)]),
     );
 
-    return journalScaffold('Welcome', pageBody, context);
+    return journalScaffold('Welcome', pageBody, context, changeMode, button: null);
   }
 
   Widget label(BuildContext context) {
