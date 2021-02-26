@@ -1,20 +1,11 @@
 import 'package:flutter/material.dart';
-
-class NewEntrybad extends StatelessWidget {
-  static final routeName = 'new';
-  // hit cancel or save button, goes back [list or welcome]
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Center(child: Text('New Entry'))),
-        body: Center(
-            child: Text('New entry goes here',
-                style: Theme.of(context).textTheme.headline4)));
-  }
-}
+import 'package:journal/widgets/journal_scaffold.dart';
 
 class NewEntry extends StatefulWidget {
   static final routeName = 'new';
+
+  final void Function() modeSwitcher; // function to switch light/dark mode
+  NewEntry(this.modeSwitcher);
 
   @override
   _NewEntryState createState() => _NewEntryState();
@@ -25,14 +16,55 @@ class _NewEntryState extends State<NewEntry> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Center(child: Text('New Entry'))),
-      body: Form(
-        key: formKey,
-        child: Padding(
-            padding: const EdgeInsets.all(18),
-            child: Column(children: formFields(context))),
-      ),
+    return journalScaffold(
+      title: 'New Entry',
+      body: pageBody(context),
+      context: context,
+      switcher: widget.modeSwitcher,
+    );
+  }
+
+  Form pageBody(BuildContext context) {
+    return Form(
+      key: formKey,
+      child: Padding(
+          padding: const EdgeInsets.all(18),
+          child: Column(children: [
+            TextFormField(
+              autofocus: true,
+              decoration: InputDecoration(
+                  labelText: 'Title', border: OutlineInputBorder()),
+              validator: (value) => nonEmptyField(value),
+            ),
+            SizedBox(height: 10),
+            DropdownButtonFormField(
+              items: [1, 2, 3, 4]
+                  .map((label) => DropdownMenuItem(
+                        child: Text(label.toString()),
+                        value: label,
+                      ))
+                  .toList(),
+              hint: Text('Put your rating here'),
+              onChanged: (value) {},
+            ),
+            TextFormField(
+              autofocus: false,
+              keyboardType: TextInputType.multiline,
+              minLines: 3,
+              maxLines: null,
+              decoration: InputDecoration(
+                labelText: 'Body',
+                border: OutlineInputBorder(),
+              ),
+              validator: (value) => nonEmptyField(value),
+            ),
+            SizedBox(height: 10),
+            Builder(builder: (context) {
+              return RaisedButton(
+                  onPressed: () => validateAndSave(context),
+                  child: Text('Save Entry'));
+            })
+          ])),
     );
   }
 

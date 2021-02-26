@@ -35,7 +35,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     final routes = {
       Welcome.routeName: (context) => Welcome(switchTheme),
-      NewEntry.routeName: (context) => NewEntry(),
+      NewEntry.routeName: (context) => NewEntry(switchTheme),
       EntriesPage.routeName: (context) => EntriesPage(switchTheme),
       EntryDetail.routeName: (context) => EntryDetail(null, null)
     };
