@@ -35,10 +35,12 @@ class _EntriesPageState extends State<EntriesPage> {
         button: addEntry(context));
   }
 
+  // used for testing
   List<EntryDto> genFakeList(int howMany) {
     return List<EntryDto>.generate(howMany, (int idx) => EntryDto.sampler());
   }
 
+  // query the database and rebuild with the updated list
   void getEntries() async {
     final Database database = await openDatabase('journal.db', version: 1,
         onCreate: (Database db, int version) async {
@@ -46,7 +48,7 @@ class _EntriesPageState extends State<EntriesPage> {
           'CREATE TABLE IF NOT EXISTS journal_entries(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, body TEXT NOT NULL, rating INTEGER NOT NULL, date TEXT NOT NULL);');
     });
     List<Map> res = await database.rawQuery('SELECT * FROM journal_entries;');
-    print(res);
+
     final journalEntries = res.map((row) {
       return EntryDto(
           title: row['title'],
@@ -54,6 +56,7 @@ class _EntriesPageState extends State<EntriesPage> {
           rating: row['rating'],
           datetime: DateTime.parse(row['date']));
     }).toList();
+    
     print(journalEntries);
     setState(() {
       entriesList = journalEntries;
@@ -61,10 +64,8 @@ class _EntriesPageState extends State<EntriesPage> {
   }
 
   Widget listOfEntries(BuildContext context) {
-    // entriesList = genFakeList(19);
-
     return entriesList == null
-        ? Text('loading')
+        ? Text('Loading...')
         : ListView.builder(
             itemCount: entriesList.length,
             itemBuilder: (context, index) {

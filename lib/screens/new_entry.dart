@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:journal/screens/entries_page.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:journal/models/entry_dto.dart';
@@ -42,35 +43,38 @@ class _NewEntryState extends State<NewEntry> {
               onSaved: (String value) => formData.title = value,
             ),
             SizedBox(height: 10),
-            DropdownButtonFormField(
-              items: [1, 2, 3, 4]
-                  .map((label) => DropdownMenuItem(
-                        child: Text(label.toString()),
-                        value: label,
-                      ))
-                  .toList(),
-              hint: Text('Put your rating here'),
-              onChanged: (value) {},
-              // validator: (value) => nonEmptyField(value),
-              onSaved: (int value) => formData.rating = value,
-            ),
             TextFormField(
-              autofocus: false,
+              decoration: InputDecoration(
+                  labelText: 'Rating (1 to 4)', border: OutlineInputBorder()),
+              validator: (value) => validateRating(value),
+              onSaved: (String value) => formData.rating = int.parse(value),
+            ),
+            SizedBox(height: 10.0),
+            TextFormField(
               keyboardType: TextInputType.multiline,
               minLines: 3,
-              maxLines: null,
+              maxLines: 6,
               decoration: InputDecoration(
                 labelText: 'Body',
                 border: OutlineInputBorder(),
               ),
+              validator: (value) => nonEmptyField(value),
               onSaved: (String value) => formData.body = value,
             ),
             SizedBox(height: 10),
-            Builder(builder: (context) {
-              return RaisedButton(
-                  onPressed: () => validateAndSave(context),
-                  child: Text('Save Entry'));
-            })
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                OutlineButton(
+                    child: Text('Cancel'),
+                    onPressed: () => Navigator.of(context).pop()),
+                Builder(builder: (context) {
+                  return RaisedButton(
+                      onPressed: () => validateAndSave(context),
+                      child: Text('Save Entry'));
+                })
+              ],
+            )
           ])),
     );
   }
@@ -93,7 +97,7 @@ class _NewEntryState extends State<NewEntry> {
             'INSERT INTO journal_entries(title, body, rating, date) values (?, ?, ?, ?)',
             [formData.title, formData.body, formData.rating, formData.dbDate]);
       });
-      Navigator.of(context).pop();
+      Navigator.pushNamed(context, EntriesPage.routeName);
     }
   }
 } // _NewEntryState
@@ -101,6 +105,18 @@ class _NewEntryState extends State<NewEntry> {
 String nonEmptyField(String data) {
   if (data.isEmpty) {
     return 'This field cannot be empty';
+  }
+  return null;
+}
+
+String validateRating(String data) {
+  try {
+    final int rating = int.parse(data);
+    if (rating < 1 || rating > 4) {
+      return 'Please enter an integer between 1 and 4 inclusive.';
+    }
+  } catch (FormatException) {
+    return 'Please enter an integer between 1 and 4 inclusive.';
   }
   return null;
 }

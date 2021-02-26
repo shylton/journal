@@ -17,7 +17,7 @@ class EntryDto {
         datetime = DateTime.now();
 
   @override
-  String toString() => 'Title: $title | Body: $body';
+  String toString() => 'EntryDto: $title';
 
   String get dateString {
     final dtFormat = DateFormat("EEEE, MMMM d, y");
