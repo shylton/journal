@@ -13,7 +13,7 @@ class EntryDto {
   EntryDto.sampler()
       : title = genWordPairs(1),
         body = genWordPairs(6),
-        rating = Random().nextInt(6),
+        rating = Random().nextInt(4) + 1,
         datetime = DateTime.now();
 
   @override

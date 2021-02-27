@@ -5,7 +5,7 @@ import 'package:journal/widgets/journal_scaffold.dart';
 import 'entries_page.dart';
 
 class Welcome extends StatelessWidget {
-  static final routeName = '/';
+  static final routeName = 'welcome';
   final void Function() modeSwitcher; // function to switch light/dark mode
   Welcome(this.modeSwitcher);
 

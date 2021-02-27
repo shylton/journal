@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:journal/screens/entries_page.dart';
-import 'package:sqflite/sqflite.dart';
 
+import 'package:journal/db/database_manager.dart';
+import 'package:journal/screens/entries_page.dart';
 import 'package:journal/models/entry_dto.dart';
 import 'package:journal/widgets/journal_scaffold.dart';
 
@@ -85,18 +85,11 @@ class _NewEntryState extends State<NewEntry> {
     if (curState.validate()) {
       Scaffold.of(context)
           .showSnackBar(SnackBar(content: Text('Saving entry...')));
-      curState.save();
+      curState.save(); // saves all form fields to the formData object
+
       // await deleteDatabase('journal.db'); // TODO: remove this line
-      final Database db = await openDatabase('journal.db', version: 1,
-          onCreate: (Database database, int version) async {
-        await database.execute(
-            'CREATE TABLE IF NOT EXISTS journal_entries(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, body TEXT NOT NULL, rating INTEGER NOT NULL, date TEXT NOT NULL);');
-      });
-      await db.transaction((txn) async {
-        await txn.rawInsert(
-            'INSERT INTO journal_entries(title, body, rating, date) values (?, ?, ?, ?)',
-            [formData.title, formData.body, formData.rating, formData.dbDate]);
-      });
+      final dbMgr = DatabaseManager.getInstance();
+      dbMgr.saveEntry(dto: formData);
       Navigator.pushNamed(context, EntriesPage.routeName);
     }
   }
@@ -116,7 +109,7 @@ String validateRating(String data) {
       return 'Please enter an integer between 1 and 4 inclusive.';
     }
   } catch (FormatException) {
-    return 'Please enter an integer between 1 and 4 inclusive.';
+    return 'Please enter a number between 1 and 4 inclusive.';
   }
   return null;
 }

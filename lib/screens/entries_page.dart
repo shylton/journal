@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:journal/db/database_manager.dart';
 import 'package:journal/widgets/add_entry.dart';
 import 'package:journal/widgets/journal_scaffold.dart';
 import 'package:journal/screens/entry_detail.dart';
 import 'package:journal/models/entry_dto.dart';
-import 'package:sqflite/sqflite.dart';
 
 class EntriesPage extends StatefulWidget {
   static final routeName = 'entryList';
@@ -42,12 +42,8 @@ class _EntriesPageState extends State<EntriesPage> {
 
   // query the database and rebuild with the updated list
   void getEntries() async {
-    final Database database = await openDatabase('journal.db', version: 1,
-        onCreate: (Database db, int version) async {
-      await db.execute(
-          'CREATE TABLE IF NOT EXISTS journal_entries(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, body TEXT NOT NULL, rating INTEGER NOT NULL, date TEXT NOT NULL);');
-    });
-    List<Map> res = await database.rawQuery('SELECT * FROM journal_entries;');
+    final dbMgr = DatabaseManager.getInstance();
+    List<Map> res = await dbMgr.selectEntries();
 
     final journalEntries = res.map((row) {
       return EntryDto(
@@ -56,7 +52,7 @@ class _EntriesPageState extends State<EntriesPage> {
           rating: row['rating'],
           datetime: DateTime.parse(row['date']));
     }).toList();
-    
+
     print(journalEntries);
     setState(() {
       entriesList = journalEntries;

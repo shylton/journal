@@ -18,6 +18,11 @@ class EntryDetail extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            'Title: ${entry.title}',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Divider(),
           Text('Rating: ${entry.rating.toString()}'),
           Divider(),
           Text(entry.body),
