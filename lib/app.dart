@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:journal/db/database_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:journal/db/database_manager.dart';
 import 'package:journal/screens/entry_detail.dart';
 import 'package:journal/screens/entries_page.dart';
 import 'package:journal/screens/new_entry.dart';
@@ -10,29 +10,20 @@ import 'package:journal/screens/welcome.dart';
 /// this is the root. must be stateful in order to switch dark/light themes
 class App extends StatefulWidget {
   final SharedPreferences preferences;
+  final bool hasEntries;
 
-  App(this.preferences);
+  App(this.preferences, this.hasEntries);
   @override
   _AppState createState() => _AppState();
 }
 
 class _AppState extends State<App> {
   bool darkMode; // true =  darkMode ON
-  bool hasEntries = true;
 
   void initState() {
     super.initState();
     darkMode =
         widget.preferences.getBool('darkMode') ?? false; // defaults to light
-    setEntries();
-  }
-
-  void setEntries() async {
-    final dbMgr = DatabaseManager.getInstance();
-    final res = await dbMgr.hasEntries();
-    setState(() {
-      hasEntries = res;
-    });
   }
 
   // if current mode is dark, switch to light and vice versa
@@ -57,7 +48,7 @@ class _AppState extends State<App> {
       title: 'Journal',
       theme: theme,
       routes: routes,
-      initialRoute: hasEntries ? EntriesPage.routeName : Welcome.routeName,
+      initialRoute: widget.hasEntries ? EntriesPage.routeName : Welcome.routeName,
     );
   }
 }

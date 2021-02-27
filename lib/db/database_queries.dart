@@ -15,4 +15,6 @@ class DatabaseQueries {
       values (?, ?, ?, ?);''';
 
   static const String SELECT_ENTRIES = 'SELECT * FROM journal_entries;';
+
+  static const String DELETE_DATABASE = 'SELECT * FROM journal_entries;';
 }

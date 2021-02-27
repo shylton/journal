@@ -17,6 +17,7 @@ class DatabaseManager {
 
   // must be called before using this manager
   static Future initialize() async {
+    // await deleteDatabase(DatabaseQueries.FILENAME); // REMOVE-ME: used in tests
     final db = await openDatabase(DatabaseQueries.FILENAME, version: 1,
         onCreate: (Database db, int version) async {
       db.execute(DatabaseQueries.CREATE_SCHEMA);

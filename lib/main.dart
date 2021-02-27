@@ -13,6 +13,8 @@ void main() async {
     DeviceOrientation.portraitUp
   ]);
   await DatabaseManager.initialize();
+  final dbMgr = DatabaseManager.getInstance();
+  final hasEntries = await dbMgr.hasEntries();
   // awaiting for sharedprefs here so we dont have to await in children
-  runApp(App(await SharedPreferences.getInstance()));
+  runApp(App(await SharedPreferences.getInstance(), hasEntries));
 }
