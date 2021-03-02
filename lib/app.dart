@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:journal/db/database_manager.dart';
 import 'package:journal/screens/entry_detail.dart';
 import 'package:journal/screens/entries_page.dart';
 import 'package:journal/screens/new_entry.dart';
@@ -48,7 +47,8 @@ class _AppState extends State<App> {
       title: 'Journal',
       theme: theme,
       routes: routes,
-      initialRoute: widget.hasEntries ? EntriesPage.routeName : Welcome.routeName,
+      initialRoute:
+          widget.hasEntries ? EntriesPage.routeName : Welcome.routeName,
     );
   }
 }

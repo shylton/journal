@@ -16,7 +16,7 @@ class Welcome extends StatelessWidget {
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [label(context), button2(context)]),
+          children: [label(context)]),
     );
 
     return journalScaffold(
@@ -38,6 +38,7 @@ class Welcome extends StatelessWidget {
     );
   }
 
+  // used in testing
   Widget button2(BuildContext context) {
     return RaisedButton(
         child: Text('See List'),

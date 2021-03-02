@@ -23,6 +23,7 @@ class DatabaseManager {
       db.execute(DatabaseQueries.CREATE_SCHEMA);
     });
     _instance = DatabaseManager._hiddenConstructor(database: db);
+    print('db initialized.');
   }
 
   void saveEntry({EntryDto dto}) {
@@ -43,5 +44,11 @@ class DatabaseManager {
     } else {
       return true;
     }
+  }
+
+  // used in testing
+  void deleteDB() async {
+    await deleteDatabase(DatabaseQueries.FILENAME);
+    initialize(); // reinitialize blank db
   }
 }

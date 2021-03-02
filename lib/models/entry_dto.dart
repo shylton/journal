@@ -31,7 +31,7 @@ class EntryDto {
 
   // goes in the database with format that can be used by DateTime.parse()
   String get dbDate {
-    final dtFormat = DateFormat("y-MM-d");
+    final dtFormat = DateFormat("y-MM-dd");
     return dtFormat.format(datetime);
   }
 }
