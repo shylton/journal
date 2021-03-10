@@ -39,3 +39,4 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+MATTA_SHYLTON.zip

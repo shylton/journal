@@ -2,6 +2,7 @@ import 'package:english_words/english_words.dart';
 import 'dart:math' show Random;
 import 'package:intl/intl.dart';
 
+/// model class for an Entry Data Transfer Object (used in rendering and db)
 class EntryDto {
   String title;
   String body;

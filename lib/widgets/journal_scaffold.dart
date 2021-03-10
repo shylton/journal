@@ -38,6 +38,7 @@ class ModeSwitch extends StatefulWidget {
   _ModeSwitchState createState() => _ModeSwitchState();
 }
 
+/// Theme switching implemented here
 class _ModeSwitchState extends State<ModeSwitch> {
   bool _darkMode = false;
 

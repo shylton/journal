@@ -1,3 +1,4 @@
+/// model class holds for database query strings
 class DatabaseQueries {
   static const String FILENAME = 'journal.sqlite3.db';
 
